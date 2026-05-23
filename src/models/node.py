@@ -1,23 +1,30 @@
 from dataclasses import dataclass
 from enum import Enum
 
+
 class NodeType(Enum):
     START_DEPOT = "START_DEPOT"
     END_DEPOT = "END_DEPOT"
     PICKUP = "PICKUP"
     DELIVERY = "DELIVERY"
+    SERVICE = "SERVICE"
+
 
 @dataclass
 class Node:
-    """
-    Đại diện cho một nút trong mô hình PDP (đồng bộ với Java).
-    """
+    """Raw node/task from a Li & Lim PDP/PDPTW instance."""
+
     id: int
     original_id: int
     x: float
     y: float
-    demand: float  # Số lượng hàng (+ cho pickup, - cho delivery, 0 cho depot)
+    demand: float
     node_type: NodeType
+    earliest: float = 0.0
+    latest: float = 0.0
+    service_time: float = 0.0
+    pickup_id: int = 0
+    delivery_id: int = 0
 
     def is_depot(self) -> bool:
         return self.node_type in (NodeType.START_DEPOT, NodeType.END_DEPOT)
@@ -29,4 +36,7 @@ class Node:
         return self.node_type == NodeType.DELIVERY
 
     def __repr__(self) -> str:
-        return f"Node(ID={self.id}, OrigID={self.original_id}, Type={self.node_type.value}, Demand={self.demand})"
+        return (
+            f"Node(id={self.id}, original_id={self.original_id}, "
+            f"type={self.node_type.value}, demand={self.demand})"
+        )

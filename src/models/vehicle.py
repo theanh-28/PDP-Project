@@ -1,27 +1,31 @@
 from dataclasses import dataclass
 from typing import Optional
+
 from .node import Node, NodeType
+
 
 @dataclass
 class Vehicle:
-    """
-    Đại diện cho xe vận chuyển (Vehicle).
-    """
+    """Vehicle metadata used by the skeleton solvers."""
+
     id: int
-    capacity: float  # Sức chứa tải trọng của xe
+    capacity: float
     start_depot: Node
     end_depot: Optional[Node] = None
 
     def __post_init__(self):
         if self.capacity <= 0:
-            raise ValueError(f"Vehicle {self.id}: capacity phải lớn hơn 0")
+            raise ValueError(f"Vehicle {self.id}: capacity must be positive.")
+
         if self.end_depot is None:
             self.end_depot = self.start_depot
-        
-        # Đồng bộ loại nút depot
+
         self.start_depot.node_type = NodeType.START_DEPOT
-        if self.end_depot:
+        if self.end_depot is not self.start_depot:
             self.end_depot.node_type = NodeType.END_DEPOT
 
     def __repr__(self) -> str:
-        return f"Vehicle(ID={self.id}, Capacity={self.capacity}, StartDepot={self.start_depot.id})"
+        return (
+            f"Vehicle(id={self.id}, capacity={self.capacity}, "
+            f"start_depot={self.start_depot.id}, end_depot={self.end_depot.id})"
+        )

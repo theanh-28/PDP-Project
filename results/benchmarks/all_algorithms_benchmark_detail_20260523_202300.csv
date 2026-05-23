@@ -1,0 +1,3 @@
+size,instance,file,requests,K_raw,K_active,max_pairs_per_route,min_routes_by_policy,algorithm,cost,routes,time_sec,status,feasible,errors,UB,LB,gap_percent,nodes_explored,lps_solved
+100,lc101,data\pdp_100\pdp_100\lc101.txt,53,25,4,15,4,greedy,791.1187831213817,4,0.03578080000079353,ok,True,0,,,,,
+100,lc101,data\pdp_100\pdp_100\lc101.txt,53,25,4,15,4,alns,688.7870094733936,4,19.457920299999387,completed,True,0,,,,,
