@@ -1,7 +1,0 @@
-size,instance,file,requests,K_raw,K_active,max_pairs_per_route,min_routes_by_policy,algorithm,cost,routes,time_sec,status,feasible,errors,UB,LB,gap_percent,nodes_explored,lps_solved
-100,lc101,data\pdp_100\pdp_100\lc101.txt,53,25,4,15,4,greedy,791.1187831213817,4,0.027995200001896592,ok,True,0,,,,,
-100,lc101,data\pdp_100\pdp_100\lc101.txt,53,25,4,15,4,local_search,778.4764261782364,4,0.46225410000261036,max_passes,True,0,,,,,
-100,lc101,data\pdp_100\pdp_100\lc101.txt,53,25,4,15,4,milp,912.9938553695354,4,0.9954165999988618,skipped_large_lp,True,0,912.9938553695354,0.0,100.0,0,0
-100,lc102,data\pdp_100\pdp_100\lc102.txt,53,25,4,15,4,greedy,782.1726419864888,4,0.02571429999807151,ok,True,0,,,,,
-100,lc102,data\pdp_100\pdp_100\lc102.txt,53,25,4,15,4,local_search,759.7558918819071,4,0.049869399997987784,max_passes,True,0,,,,,
-100,lc102,data\pdp_100\pdp_100\lc102.txt,53,25,4,15,4,milp,961.7054218143699,4,0.020734100002300693,skipped_large_lp,True,0,961.7054218143695,0.0,100.0,0,0

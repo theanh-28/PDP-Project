@@ -136,9 +136,7 @@ def run_one_algorithm(
         status = solver.status
 
     elif algorithm == "milp":
-        if milp_mode == "heuristic":
-            max_lp_variables = 1
-        elif milp_mode == "exact":
+        if milp_mode == "exact":
             max_lp_variables = 10**12
         else:
             max_lp_variables = None
@@ -408,9 +406,9 @@ def parse_args():
     parser.add_argument("--milp-lp-time-limit", type=float, default=5.0)
     parser.add_argument(
         "--milp-mode",
-        choices=["heuristic", "auto", "exact"],
-        default="heuristic",
-        help="heuristic forces MILP to return its greedy incumbent for large benchmark runs.",
+        choices=["auto", "exact"],
+        default="auto",
+        help="auto uses the solver LP-size guard; exact disables that guard for MILP runs.",
     )
     parser.add_argument(
         "--output-dir",

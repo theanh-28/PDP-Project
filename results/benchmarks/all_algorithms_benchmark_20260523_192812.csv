@@ -1,5 +1,0 @@
-size,instance,requests,K_raw,K_active,max_pairs_per_route,min_routes_by_policy,algorithm,cost,routes,time_sec,status,feasible,errors,UB,LB,gap_percent,nodes_explored,lps_solved
-100,lc101,53,25,4,15,4,greedy,791.1187831213817,4,0.04664330000014161,ok,True,0,,,,,
-100,lc101,53,25,4,15,4,local_search,778.4764261782364,4,0.6513240000022051,max_passes,True,0,,,,,
-100,lc101,53,25,4,15,4,alns,791.1187831213817,4,0.013210799999797018,baseline_only,True,0,,,,,
-100,lc101,53,25,4,15,4,milp,912.9938553695354,4,1.4878236000004108,skipped_large_lp,True,0,912.9938553695354,0.0,100.0,0,0

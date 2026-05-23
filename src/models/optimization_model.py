@@ -7,9 +7,7 @@ from src.models.instance import PDPInstance
 from src.utils.constraints import apply_fixed_arc_bounds, build_lp_components
 from src.utils.distance import compute_distance_matrix_xy
 from src.utils.numba_kernels import (
-    _numba_find_best_insertion_for_route,
     _numba_is_route_feasible,
-    _numba_is_route_feasible_fast,
     _numba_route_cost,
 )
 
@@ -291,100 +289,5 @@ class PDPLinearModel:
             else:
                 out[vehicle.id] = [vehicle.start_depot.id, vehicle.end_depot.id]
         return out
-
-    def _default_heuristic_max_pairs_per_route(self) -> int:
-        configured = os.environ.get("PDP_HEURISTIC_MAX_PAIRS_PER_ROUTE")
-        if configured:
-            return min(self.n_pairs, max(1, int(configured)))
-
-        balanced_cap = int(np.ceil(self.n_pairs / max(1, self.K)))
-        return min(self.n_pairs, max(15, balanced_cap))
-
-    def greedy_pair_insertion_heuristic(
-        self,
-        new_vehicle_penalty: float = 0.0,
-        max_pairs_per_route: int | None = None,
-    ) -> tuple[list[list[int]], float]:
-        if max_pairs_per_route is None:
-            max_pairs_per_route = self._default_heuristic_max_pairs_per_route()
-        max_pairs_per_route = max(1, int(max_pairs_per_route))
-
-        routes: list[list[int]] = []
-        requests = sorted(
-            self.P,
-            key=lambda p: (
-                self.dist[0, p]
-                + self.dist[p, self.pair_map[p]]
-                + self.dist[self.pair_map[p], self.depot_end]
-            ),
-            reverse=True,
-        )
-
-        for pickup in requests:
-            delivery = self.pair_map[pickup]
-            best_score = np.inf
-            best_route_idx = -1
-            best_route = None
-
-            for route_idx, route in enumerate(routes):
-                route_arr = np.asarray(route, dtype=np.int64)
-                delta, best_p_pos, best_d_pos = _numba_find_best_insertion_for_route(
-                    route_arr,
-                    route_arr.shape[0],
-                    pickup,
-                    delivery,
-                    self.dist,
-                    self.demand,
-                    float(self.C),
-                    self.depot_end,
-                    self.n_pairs,
-                    max_pairs_per_route,
-                )
-
-                if best_p_pos < 0:
-                    continue
-
-                route_with_pickup = route[:best_p_pos] + [pickup] + route[best_p_pos:]
-                candidate = (
-                    route_with_pickup[:best_d_pos]
-                    + [delivery]
-                    + route_with_pickup[best_d_pos:]
-                )
-                score = delta
-
-                if score < best_score:
-                    best_score = score
-                    best_route_idx = route_idx
-                    best_route = candidate
-
-            if len(routes) < self.K:
-                candidate = [0, pickup, delivery, self.depot_end]
-                candidate_arr = np.asarray(candidate, dtype=np.int64)
-                if _numba_is_route_feasible_fast(
-                    candidate_arr,
-                    candidate_arr.shape[0],
-                    self.demand,
-                    float(self.C),
-                    self.depot_end,
-                    self.n_pairs,
-                ):
-                    score = self.route_cost(candidate) + new_vehicle_penalty
-                    if score < best_score:
-                        best_score = score
-                        best_route_idx = len(routes)
-                        best_route = candidate
-
-            if best_route is None:
-                raw_pickup = self.model_to_raw.get(pickup, pickup)
-                raise ValueError(f"No feasible insertion found for pickup {raw_pickup}.")
-
-            if best_route_idx == len(routes):
-                routes.append(best_route)
-            else:
-                routes[best_route_idx] = best_route
-
-        total = sum(self.route_cost(route) for route in routes)
-        return routes, float(total)
-
 
 PDPModel = PDPLinearModel

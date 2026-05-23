@@ -15,7 +15,7 @@ from src.utils.numba_kernels import (
 )
 
 
-MAX_LP_VARIABLES = int(os.environ.get("PDP_MAX_LP_VARIABLES", "350000"))
+MAX_LP_VARIABLES = int(os.environ.get("PDP_MAX_LP_VARIABLES", "35000"))
 LP_TIME_LIMIT_REACHED = "LP_TIME_LIMIT_REACHED"
 
 
@@ -80,25 +80,7 @@ class MILPPDPSolver(BaseSolver):
             print("=" * 60)
             print("PDP MILP Branch-and-Bound Solver")
             print("=" * 60)
-            print("[INIT] Running Greedy Pair Insertion Heuristic...")
-
-        try:
-            max_pairs_per_route = self.model._default_heuristic_max_pairs_per_route()
-            routes, cost = self.model.greedy_pair_insertion_heuristic(
-                new_vehicle_penalty=0.0,
-                max_pairs_per_route=max_pairs_per_route,
-            )
-            self.Z_UB = cost
-            self.best_model_routes = routes
-            if self.verbose:
-                print(f"[INIT] Heuristic max pairs per route: {max_pairs_per_route}")
-                print(f"[INIT] Heuristic upper bound: Z_UB = {self.Z_UB:.4f}")
-                print(f"[INIT] Number of routes: {len(routes)}")
-        except ValueError as exc:
-            self.Z_UB = np.inf
-            self.best_model_routes = None
-            if self.verbose:
-                print(f"[INIT] No feasible heuristic incumbent found: {exc}")
+            print("[INIT] Pure MILP mode: no initial incumbent.")
 
         estimated_vars = self.model.K * self.model.n_arcs + 2 * self.model.K * self.model.n_nodes
         if estimated_vars > self.max_lp_variables:
@@ -109,7 +91,7 @@ class MILPPDPSolver(BaseSolver):
                     f"[B&B] Skipping LP B&B: estimated variables {estimated_vars:,} "
                     f"> limit {self.max_lp_variables:,}."
                 )
-                print("[B&B] Returning current incumbent without LP B&B.")
+                print("[B&B] No MILP solution generated because LP B&B was skipped.")
                 self._print_results(time.time() - t_start)
             return self._build_solution()
 

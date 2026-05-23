@@ -1,3 +1,0 @@
-size,algorithm,instances,avg_requests,avg_K_raw,avg_K_active,avg_max_pairs_per_route,avg_cost,avg_routes,avg_time_sec,feasible_rate,total_errors,statuses
-100,alns,1,53.0,25.0,4.0,15.0,688.7870094733936,4.0,19.457920299999387,1.0,0,completed:1
-100,greedy,1,53.0,25.0,4.0,15.0,791.1187831213817,4.0,0.03578080000079353,1.0,0,ok:1

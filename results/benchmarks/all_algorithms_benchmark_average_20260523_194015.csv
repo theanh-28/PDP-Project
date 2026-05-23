@@ -1,4 +1,0 @@
-size,algorithm,instances,avg_requests,avg_K_raw,avg_K_active,avg_max_pairs_per_route,avg_cost,avg_routes,avg_time_sec,feasible_rate,total_errors,statuses
-100,greedy,2,53.0,25.0,4.0,15.0,786.6457125539353,4.0,0.02685474999998405,1.0,0,ok:2
-100,local_search,2,53.0,25.0,4.0,15.0,769.1161590300717,4.0,0.25606175000029907,1.0,0,max_passes:2
-100,milp,2,53.0,25.0,4.0,15.0,937.3496385919526,4.0,0.5080753500005812,1.0,0,skipped_large_lp:2
