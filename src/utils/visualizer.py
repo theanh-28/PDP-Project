@@ -47,6 +47,7 @@ class PDPVisualizer:
 
         # 2. Vẽ lộ trình di chuyển của từng xe
         colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+        total_cost = solution.calculate_total_cost()  # Tính 1 lần duy nhất
         
         for idx, (vehicle_id, route) in enumerate(solution.routes.items()):
             if not route or len(route) < 2:
@@ -63,7 +64,7 @@ class PDPVisualizer:
 
             # Vẽ đường lộ trình
             plt.plot(x_coords, y_coords, color=color, linewidth=2.5, alpha=0.8, zorder=2,
-                     label=f'Vehicle {vehicle_id} (Cost: {solution.calculate_total_cost():.1f})')
+                     label=f'Vehicle {vehicle_id}')
 
             # Mũi tên chỉ hướng
             for i in range(len(route) - 1):
