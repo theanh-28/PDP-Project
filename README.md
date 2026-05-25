@@ -1,55 +1,64 @@
-# PDP Project
+# PDP-Project: THIẾT KẾ VÀ ĐÁNH GIÁ THUẬT TOÁN GIẢI BÀI TOÁN PICKUP AND DELIVERY PROBLEM (PDP)
 
-Một dự án Python rỗng đã được khởi tạo thành công.
+Khung chương trình Python chuyên nghiệp giải quyết bài toán giao nhận hàng hóa (**Pickup and Delivery Problem - PDP / PDPTW**). Dự án tích hợp các thuật toán tối ưu hóa chính xác và heuristic hiệu năng cao, được tăng tốc toàn diện bằng **Numba JIT**.
 
-## Cấu trúc thư mục hiện tại
+---
 
-```text
-PDP-Project/
-├── .gitignore         # File cấu hình Git để bỏ qua các file không cần thiết
-├── README.md          # File hướng dẫn/giới thiệu dự án (file này)
-├── requirements.txt   # File chứa các thư viện phụ thuộc (dependencies)
-└── main.py            # File chạy chính của chương trình (Hello World)
-```
+## 🚀 Các Giải Thuật Cốt Lõi
 
-## Hướng dẫn cài đặt & Chạy dự án
+*   **Greedy Pair Insertion (`GreedyPairInsertionSolver`):** Thuật toán chèn cặp nhanh chóng kết hợp cân bằng tải trọng công việc ($M_{\max}$) để khởi tạo lời giải ban đầu.
+*   **Local Search (`LocalSearchSolver`):** Tối ưu hóa lộ trình từng xe thông qua các phép toán lân cận kinh điển **2-opt** và **Or-opt** (di chuyển phân đoạn 2 hoặc 3 điểm dừng).
+*   **ALNS Adaptation (`ALNSSolver`):** Tìm kiếm lân cận lớn thích ứng động với các toán tử phá hủy/tái thiết lộ trình kết hợp Simulated Annealing để tìm nghiệm cận tối ưu.
+*   **MILP Solver (`MILPPDPSolver`):** Quy hoạch tuyến tính nguyên hỗn hợp giải bằng bộ giải toán học `CBC` thông qua thư viện `PuLP` để tìm nghiệm tối ưu tuyệt đối (quy mô nhỏ).
 
-### 1. Khởi tạo Virtual Environment (Môi trường ảo)
+---
 
-Khuyến nghị sử dụng môi trường ảo để quản lý các gói thư viện riêng biệt cho dự án:
+## 🛠️ Cài Đặt Nhanh
+
+Khuyến nghị sử dụng môi trường ảo Python 3.10+:
 
 ```bash
-# Tạo môi trường ảo có tên là .venv
+# 1. Tạo môi trường ảo
 python -m venv .venv
-```
 
-### 2. Kích hoạt môi trường ảo
+# 2. Kích hoạt môi trường ảo
+# Windows (PowerShell):
+.venv\Scripts\Activate.ps1
+# Windows (CMD):
+.venv\Scripts\activate.bat
+# Linux / macOS:
+source .venv/bin/activate
 
-- **Trên Windows (PowerShell):**
-  ```powershell
-  .venv\Scripts\Activate.ps1
-  ```
-- **Trên Windows (CMD):**
-  ```cmd
-  .venv\Scripts\activate.bat
-  ```
-- **Trên macOS / Linux:**
-  ```bash
-  source .venv/bin/activate
-  ```
-
-### 3. Cài đặt các thư viện phụ thuộc
-
-Khi bạn thêm các thư viện vào `requirements.txt`, cài đặt chúng bằng lệnh:
-
-```bash
+# 3. Cài đặt các thư viện phụ thuộc
 pip install -r requirements.txt
 ```
 
-### 4. Chạy dự án
+---
 
-Chạy file chạy chính `main.py`:
+## 💻 Hướng Dẫn Vận Hành
 
-```bash
-python main.py
-```
+*   **Chạy demo kiểm tra nhanh hệ thống:**
+    ```bash
+    python main.py
+    ```
+*   **Chạy toàn bộ thực nghiệm đánh giá hiệu năng (tất cả kích thước và thuật toán):**
+    ```bash
+    python benchmark_all.py
+    ```
+*   **Chỉ chạy thuật toán Greedy trên toàn bộ dữ liệu (cực nhanh):**
+    ```bash
+    python benchmark_all.py --algorithms greedy
+    ```
+*   **Chạy thử nghiệm nhanh (chỉ chạy 1 file đại diện cho mỗi kích thước để test nhanh):**
+    ```bash
+    python benchmark_all.py --algorithms greedy local_search alns --file-scope sample
+    ```
+
+---
+
+## 📊 Kết Quả Thực Nghiệm
+
+Các tệp báo cáo tổng hợp sau khi chạy thực nghiệm sẽ được lưu tự động trong thư mục `results/benchmarks/`:
+*   `all_algorithms_benchmark_detail_<timestamp>.csv` (Báo cáo chi tiết từng tệp chạy).
+*   `all_algorithms_benchmark_average_<timestamp>.csv` (Báo cáo trung bình dạng số liệu thô).
+*   `all_algorithms_benchmark_average_<timestamp>.md` (Báo cáo trung bình dạng bảng Markdown).
